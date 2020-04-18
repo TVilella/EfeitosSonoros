@@ -1,0 +1,25 @@
+#######################################
+# Syntax Coloring Map For [nome da biblioteca]
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1) - Tipos de Dados
+#######################################
+
+EfeitosSonoros	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2) - Métodos e Funções
+#######################################
+
+papararapa	KEYWORD2
+vitoria		KEYWORD2
+marchafunebre	KEYWORD2
+
+#######################################
+# Constants (LITERAL1) - Constantes
+#######################################
+
+PAPARARAPA	KEYWORD3
+VITORIA		KEYWORD3
+MARCHAFUNEBRE	KEYWORD3
