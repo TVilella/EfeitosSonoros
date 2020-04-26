@@ -15,7 +15,7 @@ EfeitosSonoros(byte pino);
 void papararapa();
 void vitoria();
 void marchafunebre();
-
+void sirene();
 
 private:
 void tocaefeito(int numerodenotas);

@@ -44,3 +44,15 @@ void EfeitosSonoros::tocaefeito(int numerodenotas) {
 	noTone(pinBuzzer);	
 }
 
+void EfeitosSonoros::sirene(int periodo = 10, int primeira = 100) {
+	int ultima = primeira +2000;
+	for	 (int frequencia = primeira; frequencia < ultima; frequencia++) {  
+tone(pinBuzzer, frequencia, periodo);
+delay(periodo * 0.1);
+}  
+for (int frequencia = ultima; frequencia > primeira; frequencia--) {
+tone(pinBuzzer, frequencia, periodo);
+delay(periodo * 0.1);
+}
+
+}
