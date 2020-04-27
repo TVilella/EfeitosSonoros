@@ -38,21 +38,84 @@ void EfeitosSonoros::tocaefeito(int numerodenotas) {
 		int tempo_nota = 1000 / tempo[nota];
 		tone(pinBuzzer, melodia[nota],tempo_nota); // para distinguir as notas, ajuste um tempo minimo entre elas. a duracao da nota + 30% funcionara bem:
 		int intervalo = tempo_nota * 1.30;
-		delay(intervalo);
+		if(!delayEfeito(intervalo)) return;
 	}
 	
 	noTone(pinBuzzer);	
 }
 
 void EfeitosSonoros::sirene(int periodo = 10, int primeira = 100) {
-	int ultima = primeira +2000;
+	int ultima = primeira + 2000;
+	
 	for	 (int frequencia = primeira; frequencia < ultima; frequencia++) {  
-tone(pinBuzzer, frequencia, periodo);
-delay(periodo * 0.1);
-}  
-for (int frequencia = ultima; frequencia > primeira; frequencia--) {
-tone(pinBuzzer, frequencia, periodo);
-delay(periodo * 0.1);
-}
+		tone(pinBuzzer, frequencia, periodo);
+		if(!delayEfeito(periodo * 0.1)) return;
+	}  
+	for (int frequencia = ultima; frequencia > primeira; frequencia--) {
+		tone(pinBuzzer, frequencia, periodo);
+		if(!delayEfeito(periodo * 0.1)) return;
+	}
 
 }
+
+void EfeitosSonoros::setDigitalStop(byte pino, bool pullup = true){
+	if (pino > 19) return;
+	pinStop = pino;
+
+	if(pullup){
+		pinMode(pinStop, INPUT_PULLUP);
+		tipoStop = 1;
+	} else {
+		pinMode(pinStop, INPUT);
+		tipoStop = 2;
+	}
+}
+
+void EfeitosSonoros::setAnalogStop(byte pino, int valor, bool maior = true){
+	if(pino < A0 || pino > A5) return;
+	pinStop = pino;
+	valStop = valor;
+	
+	pinMode(pinStop, INPUT);
+	
+	if(maior) tipoStop = 3;
+	else tipoStop = 4;
+}
+
+bool EfeitosSonoros::delayEfeito(unsigned long tempoDelay){
+	unsigned long inicioDelay = millis();
+	
+	switch (tipoStop){
+		case 1: {
+			while( inicioDelay + tempoDelay >= millis() ){
+				if(!digitalRead(pinStop)) return false;
+			}
+			break;
+		}
+		case 2: {
+			while( inicioDelay + tempoDelay >= millis() ){
+				if(digitalRead(pinStop)) return false;
+			}
+			break;
+		}
+		case 3: {
+			while( inicioDelay + tempoDelay >= millis() ){
+				if(analogRead(pinStop) > valStop) return false;
+			}
+			break;
+		}
+		case 4: {
+			while( inicioDelay + tempoDelay >= millis() ){
+				if(analogRead(pinStop) < valStop) return false;
+			}
+			break;
+		}
+		default:{
+			while( inicioDelay + tempoDelay >= millis() ){
+			}
+		}
+	}
+	
+	return true;
+}	
+	
